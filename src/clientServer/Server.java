@@ -50,6 +50,7 @@ public class Server  extends Thread {
 
 	/* COMPLETE 1b: declare other necessary attributes here */
 	private Random alea;
+	private List <Question> artList, geoList, scienceList;
 	
 	
 	
@@ -59,6 +60,12 @@ public class Server  extends Thread {
 		this.outputChannel = new PrintWriter(this.connection.getOutputStream(), true);
 		/* COMPLETE 1bb: (optional) initialize other attributes */
 		this.alea = new Random();
+		artList = new LinkedList<Question>();
+		geoList = new LinkedList<Question>();
+		scienceList = new LinkedList<Question>();
+		art.forEach(q -> artList.add(q));
+		geo.forEach(q -> geoList.add(q));
+		science.forEach(q -> scienceList.add(q));
 	}
 
 	public void run() {
@@ -83,15 +90,31 @@ public class Server  extends Thread {
 			
 			switch(request.info) {
 			case "GEO":
-				geo.get(alea.nextInt(geo.size()-1));
+				if (geoList.size() > 0) {
+					Question q = geoList.get(alea.nextInt(geoList.size()));
+					geoList.remove(q);
+					sendReply(q.toString());
+				}
+				else sendReply("NO MORE");
 				break;
 			case "ART":
-				art.get(alea.nextInt(art.size()-1));
+				if (artList.size() > 0) {
+					Question q = artList.get(alea.nextInt(artList.size()));
+					artList.remove(q);
+					sendReply(q.toString());
+				}
+				else sendReply("NO MORE");
 				break;
 			case "SCIENCE":
-				science.get(alea.nextInt(science.size()-1));
+				if (scienceList.size() > 0) {
+					Question q = scienceList.get(alea.nextInt(scienceList.size()));
+					scienceList.remove(q);
+					sendReply(q.toString());
+				}
+				else sendReply("NO MORE");
 				break;
 			}
+			request = receiveRequest();
 			
 			
 		}
