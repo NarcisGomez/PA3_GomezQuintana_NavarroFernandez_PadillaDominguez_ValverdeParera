@@ -31,9 +31,13 @@ public class Server  extends Thread {
 
 		/* COMPLETE 1a: create ServerSocket and get ready to spawn new server instances 
 		 * to service incoming connections (on demand approach) */
+		ServerSocket serverSocket = new ServerSocket (4445);
+		System.out.println("Accepting incoming connections on port 4445");
 		
-		
-		
+		while(true) {
+			connection = serverSocket.accept();
+			new Server(connection).start();	
+		}
 	}
 	// LAUNCHER ENDS HERE
 	
@@ -45,6 +49,7 @@ public class Server  extends Thread {
 	private PrintWriter outputChannel;
 
 	/* COMPLETE 1b: declare other necessary attributes here */
+	private Random alea;
 	
 	
 	
@@ -53,6 +58,7 @@ public class Server  extends Thread {
 		this.inputChannel = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
 		this.outputChannel = new PrintWriter(this.connection.getOutputStream(), true);
 		/* COMPLETE 1bb: (optional) initialize other attributes */
+		this.alea = new Random();
 	}
 
 	public void run() {
@@ -66,6 +72,37 @@ public class Server  extends Thread {
 	public void innerRun() throws IOException {
 		/* COMPLETE 2 
 		 * Here service one client */
+		Request request = receiveRequest();
+		if(!request.type.equals("HELLO")) {
+			sendReply("BAD REQUEST");
+			disconnect();
+		}
+		sendReply("HELLO");
+		request = receiveRequest();
+		while (request.type.equals("NEXT")) {
+			
+			switch(request.info) {
+			case "GEO":
+				geo.get(alea.nextInt(geo.size()-1));
+				break;
+			case "ART":
+				art.get(alea.nextInt(art.size()-1));
+				break;
+			case "SCIENCE":
+				science.get(alea.nextInt(science.size()-1));
+				break;
+			}
+			
+			
+		}
+		if(!request.type.equals("STOP")) {
+		
+			sendReply("BAD REQUEST");
+			disconnect();
+		}
+		else disconnect();
+		
+		
 		
 		
 	}
