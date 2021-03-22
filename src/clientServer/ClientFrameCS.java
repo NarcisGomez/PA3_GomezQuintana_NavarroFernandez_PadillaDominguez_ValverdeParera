@@ -246,26 +246,143 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	
 	protected void btnConnectactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try{
+			connect();
+			
+			sendRequest("HELLO " + name_textField.getText());
+			
+			System.out.println(receiveReply());
+			
+			lblCorrect.setForeground(Color.black);
+			lblCorrect.setText("HELLO " + name_textField.getText() + ", PICK A QUESTION...");
+			lblCorrect.setVisible(true);
+			btnArt.setEnabled(true);
+			btnGeography.setEnabled(true);
+			btnPlayNoMore.setEnabled(true);
+			btnScience.setEnabled(true);
+			btnConnect.setEnabled(false);
+			name_textField.setEditable(false);
+			
+			}
+		catch(IOException e) {
+			System.out.println("Connection: " + e);
+			System.exit(ERROR);}
 	}
 	
 	protected void btnGeographyactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			sendRequest("NEXT GEO");
+			reply = receiveReply();
+			if (!reply.equals("NO MORE")) {
+				lblCorrect.setText("Take your time...");
+				question = Question.fromString(reply);
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setText("No more geography questions!");
+				btnGeography.setEnabled(false);
+			}
+		}
+		catch(IOException e) {
+			System.out.println("GeoQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnScienceactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			sendRequest("NEXT SCIENCE");
+			reply = receiveReply();
+			if (!reply.equals("NO MORE")) {
+				lblCorrect.setText("Take your time...");
+				question = Question.fromString(reply);
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setText("No more science questions!");
+				btnScience.setEnabled(false);
+			}
+		}
+		catch(IOException e) {
+			System.out.println("scienceQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnArtactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			sendRequest("NEXT ART");
+			reply = receiveReply();
+			if (!reply.equals("NO MORE")) {
+				lblCorrect.setText("Take your time...");
+				question = Question.fromString(reply);
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setText("No more art questions!");
+				btnArt.setEnabled(false);
+			}
+		}
+		catch(IOException e) {
+			System.out.println("ArtQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnPlayNoMoreactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			sendRequest("STOP now");
+			System.exit(EXIT_ON_CLOSE);
+		}
+		catch(IOException e) {
+			System.out.println("Stop: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void rdbtnAnswer1actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		if(rdbtnAnswer1.isEnabled()) answerCount += 1;
+		else answerCount -= 1;
+		rdbtnAnswer1.setEnabled(!rdbtnAnswer1.isEnabled());
+
 	}
 	
 	protected void rdbtnAnswer2actionPerformed(ActionEvent arg0) {
@@ -293,6 +410,9 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	private Socket connection;
 	
 	/* COMPLETE: add other necessary attributes */
+	private Question question;
+	private String reply;
+	private int answerCount = 0;
 	
 	
 	/* COMPLETE: add other auxiliary private methods: to request a question to the server, 

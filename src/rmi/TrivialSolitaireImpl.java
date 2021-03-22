@@ -22,7 +22,9 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	private static List<Question> art, geo, science; // shouldn't modify these lists...
 	
 	/* COMPLETE 1a add other necessary attributes */
-	
+	private List<Question> artList, geoList, scienceList;
+	private volatile int id;
+	 
 	// static initializer (initializes the lists)
 	static {
 		art = new LinkedList<Question>();
@@ -53,10 +55,33 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	
 	public TrivialSolitaireImpl() throws RemoteException {
 		/* COMPLETE if needed 1b: Constructor ... */
+		artList = new LinkedList<Question>();
+		geoList = new LinkedList<Question>();
+		scienceList = new LinkedList<Question>();
+		art.forEach(q -> artList.add(q));
+		geo.forEach(q -> geoList.add(q));
+		science.forEach(q -> scienceList.add(q));
+		id = 0;
 	}
 
 	/* COMPLETE 2: implement interface and other helper methods */
-	
+	@Override
+	public int Hello() throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Question next(int id, String type) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void stop(int id) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 
