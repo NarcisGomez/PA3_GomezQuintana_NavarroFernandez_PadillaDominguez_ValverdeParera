@@ -253,44 +253,171 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 		/* COMPLETE */
 		try{
 			connect();
-		}catch (Exception e) {System.out.println("Connection: " + e);}
+			
+			lblCorrect.setForeground(Color.black);
+			lblCorrect.setText("HELLO " + name_textField.getText() + ", PICK A QUESTION...");
+			lblCorrect.setVisible(true);
+			btnArt.setEnabled(true);
+			btnGeography.setEnabled(true);
+			btnPlayNoMore.setEnabled(true);
+			btnScience.setEnabled(true);
+			btnConnect.setEnabled(false);
+			name_textField.setEditable(false);
+		}catch (Exception e) {
+			System.out.println("Connection: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnGeographyactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			question = provider.next(identifier, "GEO");
+			if (question != null) {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("Take your time...");
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("No more geography questions!");
+			}
+		}
+		catch(IOException e) {
+			System.out.println("GeoQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnScienceactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			question = provider.next(identifier, "SCIENCE");
+			if (question != null) {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("Take your time...");
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("No more science questions!");
+			}
+		}
+		catch(IOException e) {
+			System.out.println("ScienceQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnArtactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			question = provider.next(identifier, "ART");
+			if (question != null) {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("Take your time...");
+				lblQuestion.setText(question.getTheQuestion());
+				rdbtnAnswer1.setText(question.getAnswers()[0]);
+				rdbtnAnswer1.setEnabled(true);
+				rdbtnAnswer2.setText(question.getAnswers()[1]);
+				rdbtnAnswer2.setEnabled(true);
+				rdbtnAnswer3.setText(question.getAnswers()[2]);
+				rdbtnAnswer3.setEnabled(true);
+				rdbtnAnswer4.setText(question.getAnswers()[3]);
+				rdbtnAnswer4.setEnabled(true);
+				btnGeography.setEnabled(false);
+				btnArt.setEnabled(false);
+				btnScience.setEnabled(false);
+			}
+			else {
+				lblCorrect.setForeground(Color.BLACK);
+				lblCorrect.setText("No more art questions!");
+			}
+		}
+		catch(IOException e) {
+			System.out.println("ArtQuestion: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void btnPlayNoMoreactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try {
+			disconnect();
+			System.exit(EXIT_ON_CLOSE);
+		}
+		catch(IOException e) {
+			System.out.println("Stop: " + e);
+			System.exit(ERROR);
+		}
 	}
 	
 	protected void rdbtnAnswer1actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer1.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer2actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer2.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer3actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer3.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer4actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer4.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 		
 	
 	protected void btnCheckactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		if (checkAnswers()) {
+			lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS CORRECT");
+			lblCorrect.setForeground(Color.GREEN);
+		}
+		else {
+			lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS INCORRECT");
+			lblCorrect.setForeground(Color.RED);
+		}
+		buttonGroup.clearSelection();
+		btnGeography.setEnabled(true);
+		btnArt.setEnabled(true);
+		btnScience.setEnabled(true);
+		rdbtnAnswer1.setEnabled(false);
+		rdbtnAnswer2.setEnabled(false);
+		rdbtnAnswer3.setEnabled(false);
+		rdbtnAnswer4.setEnabled(false);
+		btnCheck.setEnabled(false);
 	}
 	
 	
@@ -302,14 +429,29 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	private Registry registry;
 	private TrivialSolitaire provider;
 	private int identifier;
+	private Question question;
+	private int answer;
 	
 	private void connect() throws IOException, NotBoundException{
-		registry = LocateRegistry.getRegistry("TrivialSolitaire",1998);
+		registry = LocateRegistry.getRegistry("localhost",1998);
 		provider = (TrivialSolitaire) registry.lookup("TrivialSolitaire");
 		
 		identifier = provider.Hello();
-		
 	}
+	
+	private void disconnect() throws RemoteException {
+		
+		provider.stop(identifier);
+	}
+	
+	private boolean checkAnswers () {
+    	answer = question.getCorrect();
+    	if(rdbtnAnswer1.isSelected() && answer == 1) return true;
+    	else if (rdbtnAnswer2.isSelected() && answer == 2) return true;
+    	else if (rdbtnAnswer3.isSelected() && answer == 3) return true;
+    	else if (rdbtnAnswer4.isSelected() && answer == 4) return true;
+    	else return false;
+    }
 	
 	
 	
