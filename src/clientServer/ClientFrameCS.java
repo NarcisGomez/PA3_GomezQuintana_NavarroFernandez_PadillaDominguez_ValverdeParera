@@ -274,7 +274,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
@@ -308,7 +308,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
@@ -342,7 +342,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
