@@ -275,6 +275,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			sendRequest("NEXT GEO");
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("Take your time...");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
@@ -291,8 +292,8 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("No more geography questions!");
-				btnGeography.setEnabled(false);
 			}
 		}
 		catch(IOException e) {
@@ -307,6 +308,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			sendRequest("NEXT SCIENCE");
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("Take your time...");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
@@ -323,8 +325,8 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("No more science questions!");
-				btnScience.setEnabled(false);
 			}
 		}
 		catch(IOException e) {
@@ -339,6 +341,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			sendRequest("NEXT ART");
 			reply = receiveReply();
 			if (!reply.equals("NO MORE")) {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("Take your time...");
 				question = Question.fromString(reply);
 				lblQuestion.setText(question.getTheQuestion());
@@ -355,8 +358,8 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
+				lblCorrect.setForeground(Color.BLACK);
 				lblCorrect.setText("No more art questions!");
-				btnArt.setEnabled(false);
 			}
 		}
 		catch(IOException e) {
@@ -369,6 +372,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 		/* COMPLETE */
 		try {
 			sendRequest("STOP now");
+			disconnect();
 			System.exit(EXIT_ON_CLOSE);
 		}
 		catch(IOException e) {
@@ -379,27 +383,48 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	
 	protected void rdbtnAnswer1actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
-		if(rdbtnAnswer1.isEnabled()) answerCount += 1;
-		else answerCount -= 1;
-		rdbtnAnswer1.setEnabled(!rdbtnAnswer1.isEnabled());
-
+		rdbtnAnswer1.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer2actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer2.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer3actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer3.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer4actionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		rdbtnAnswer4.setSelected(true);
+		btnCheck.setEnabled(true);
 	}
 	
 	
 	protected void btnCheckactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+			if (checkAnswers()) {
+				lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS CORRECT");
+				lblCorrect.setForeground(Color.GREEN);
+			}
+			else {
+				lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS INCORRECT");
+				lblCorrect.setForeground(Color.RED);
+			}
+			buttonGroup.clearSelection();
+			btnGeography.setEnabled(true);
+			btnArt.setEnabled(true);
+			btnScience.setEnabled(true);
+			rdbtnAnswer1.setEnabled(false);
+			rdbtnAnswer2.setEnabled(false);
+			rdbtnAnswer3.setEnabled(false);
+			rdbtnAnswer4.setEnabled(false);
+			btnCheck.setEnabled(false);
 	}
 	
 	// ----------------- My stuff starts here --------------
@@ -412,7 +437,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	/* COMPLETE: add other necessary attributes */
 	private Question question;
 	private String reply;
-	private int answerCount = 0;
+	private int answer;
 	
 	
 	/* COMPLETE: add other auxiliary private methods: to request a question to the server, 
@@ -443,5 +468,12 @@ public class ClientFrameCS extends JFrame implements ActionListener {
     private  void sendRequest (String request) throws IOException {
         outputChannel.println(request);
     }
-	
+    private boolean checkAnswers () {
+    	answer = question.getCorrect();
+    	if(rdbtnAnswer1.isSelected() && answer == 1) return true;
+    	else if (rdbtnAnswer2.isSelected() && answer == 2) return true;
+    	else if (rdbtnAnswer3.isSelected() && answer == 3) return true;
+    	else if (rdbtnAnswer4.isSelected() && answer == 4) return true;
+    	else return false;
+    }
 }
