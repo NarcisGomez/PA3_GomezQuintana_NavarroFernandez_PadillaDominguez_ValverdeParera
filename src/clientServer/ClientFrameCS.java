@@ -245,14 +245,13 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void btnConnectactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try{
 			connect();
 			
 			sendRequest("HELLO " + name_textField.getText());
 			receiveReply();
 			
-			JOptionPane.showMessageDialog(null, "Server says: HELLO" + name_textField.getText() , "Server says...", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Server says: HELLO " + name_textField.getText() , "Server says...", JOptionPane.INFORMATION_MESSAGE);
             lblCorrect.setText("");
 			lblCorrect.setVisible(true);
 			btnArt.setEnabled(true);
@@ -270,7 +269,6 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void btnGeographyactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			sendRequest("NEXT GEO");
 			reply = receiveReply();
@@ -305,7 +303,6 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void btnScienceactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			sendRequest("NEXT SCIENCE");
 			reply = receiveReply();
@@ -340,7 +337,6 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void btnArtactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			sendRequest("NEXT ART");
 			reply = receiveReply();
@@ -375,7 +371,6 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void btnPlayNoMoreactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			sendRequest("STOP now");
 			disconnect();
@@ -388,32 +383,27 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	}
 	
 	protected void rdbtnAnswer1actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer1.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer2actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer2.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer3actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer3.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer4actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer4.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	
 	protected void btnCheckactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 			if (checkAnswers()) {
 				lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS CORRECT");
 				lblCorrect.setForeground(Color.GREEN);
@@ -443,19 +433,13 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 	private PrintWriter outputChannel;
 	private Socket connection;
 	
-	/* COMPLETE: add other necessary attributes */
 	private Question question;
 	private String reply;
 	private int answer;
 	
-	
-	/* COMPLETE: add other auxiliary private methods: to request a question to the server, 
-	 * to display a question and its four answers... 
-	 */
 	private boolean geoQuestionsEmpty = false;
 	private boolean scienceQuestionsEmpty = false;
 	private boolean artQuestionsEmpty = false;
-
 	
 	private void connect () throws IOException {
         connection = new Socket("localhost", 4445);

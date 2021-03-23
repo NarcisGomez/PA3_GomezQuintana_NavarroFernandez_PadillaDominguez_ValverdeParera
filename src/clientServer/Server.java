@@ -6,7 +6,7 @@ import java.util.*;
 
 import common.Question;
 
-public class Server  extends Thread {
+public class Server extends Thread {
 
 	// LAUNCHER: server(s) spawner
 	public static void main(String[] args) throws IOException {
@@ -29,36 +29,31 @@ public class Server  extends Thread {
 			}
 		}
 
-		/* COMPLETE 1a: create ServerSocket and get ready to spawn new server instances 
-		 * to service incoming connections (on demand approach) */
-		ServerSocket serverSocket = new ServerSocket (4445);
-		System.out.println("Accepting incoming connections on port 4445");
-		
-		while(true) {
+		ServerSocket serverSocket = new ServerSocket(4445);
+		System.out.println("SOLITRIVIA multi-server is ready and accepting incoming connections (port 4445)");
+
+		while (true) {
 			connection = serverSocket.accept();
-			new Server(connection).start();	
+			new Server(connection).start();
 		}
 	}
 	// LAUNCHER ENDS HERE
-	
-	private static List<Question> art, geo, science; // BEWARE! Static. 
+
+	private static List<Question> art, geo, science; // BEWARE! Static.
 	// instances shouldn't modify these lists
 
 	private Socket connection;
 	private BufferedReader inputChannel;
 	private PrintWriter outputChannel;
 
-	/* COMPLETE 1b: declare other necessary attributes here */
 	private Random alea;
-	private List <Question> artList, geoList, scienceList;
-	
-	
-	
+	private List<Question> artList, geoList, scienceList;
+
 	public Server(Socket connection) throws IOException {
 		this.connection = connection;
 		this.inputChannel = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
 		this.outputChannel = new PrintWriter(this.connection.getOutputStream(), true);
-		/* COMPLETE 1bb: (optional) initialize other attributes */
+
 		this.alea = new Random();
 		artList = new LinkedList<Question>(art);
 		geoList = new LinkedList<Question>(geo);
@@ -74,75 +69,73 @@ public class Server  extends Thread {
 	}
 
 	public void innerRun() throws IOException {
-		/* COMPLETE 2 
-		 * Here service one client */
+
 		Request request = receiveRequest();
-		if(!request.type.equals("HELLO")) {
+		if (!request.type.equals("HELLO")) {
 			sendReply("BAD REQUEST");
 			disconnect();
+			return;
 		}
 		sendReply("HELLO");
+
 		request = receiveRequest();
+		boolean unknownType = false;
 		while (request.type.equals("NEXT")) {
-			
-			switch(request.info) {
+			switch (request.info) {
 			case "GEO":
 				if (geoList.size() > 0) {
 					Question q = geoList.get(alea.nextInt(geoList.size()));
 					geoList.remove(q);
 					sendReply(q.toString());
+				} else {
+					sendReply("NO MORE");
 				}
-				else sendReply("NO MORE");
 				break;
 			case "ART":
 				if (artList.size() > 0) {
 					Question q = artList.get(alea.nextInt(artList.size()));
 					artList.remove(q);
 					sendReply(q.toString());
+				} else {
+					sendReply("NO MORE");
 				}
-				else sendReply("NO MORE");
 				break;
 			case "SCIENCE":
 				if (scienceList.size() > 0) {
 					Question q = scienceList.get(alea.nextInt(scienceList.size()));
 					scienceList.remove(q);
 					sendReply(q.toString());
+				} else {
+					sendReply("NO MORE");
 				}
-				else sendReply("NO MORE");
+				break;
+			default:
+				unknownType = true;
 				break;
 			}
-			request = receiveRequest();
-			
-			
-		}
-		if(!request.type.equals("STOP")) {
-		
-			sendReply("BAD REQUEST");
-			disconnect();
-		}
-		else disconnect();
-		
-		
-		
-		
-	}
 
-	/* COMPLETE 3 (optional)
-	 * Write here private methods for several purposes like
-	 * getting a new question for the client, keeping track of the questions
-	 * already sent to the client...
-	 */
-	
+			if (unknownType) {
+				break;
+			} else {
+				request = receiveRequest();
+			}
+		}
+
+		if (!request.type.equals("STOP") || unknownType) {
+			sendReply("BAD REQUEST");
+		}
+		disconnect();
+
+	}
 
 	private Request receiveRequest() throws IOException {
 		String contents = inputChannel.readLine();
 		Request request = new Request();
 		int b = contents.indexOf(" "); // position of the first blank
-		if (b<0) {
+		if (b < 0) {
 			request.type = contents;
-			request.info ="";
-		}
-		else {
+			request.info = "";
+		} else {
 			request.type = contents.substring(0, b); // type of requested question goes from the beginning till the first blank
 			request.info = contents.substring(b + 1).trim(); // information is everything following the first blank
 		}
@@ -161,8 +154,8 @@ public class Server  extends Thread {
 
 	/* PRIVATE Server-Side only class to represent requests */
 	private class Request {
-		public String type;  // type of request  (HELLO, NEXT, STOP)
-		public String info;  // additional information (GEO, SCIENCE, ART)
+		public String type; // type of request (HELLO, NEXT, STOP)
+		public String info; // additional information (GEO, SCIENCE, ART)
 	}
 
 }
