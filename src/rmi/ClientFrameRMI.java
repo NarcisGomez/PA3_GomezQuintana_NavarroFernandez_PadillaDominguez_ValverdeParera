@@ -291,8 +291,10 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
-				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("No more geography questions!");
+                lblCorrect.setText("");
+                geoQuestionsEmpty = true;
+                btnGeography.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "Server says: NO MORE QUESTIONS OF THIS TYPE", "Server says...", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		catch(IOException e) {
@@ -322,8 +324,10 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
-				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("No more science questions!");
+                lblCorrect.setText("");
+                scienceQuestionsEmpty = true;
+                btnScience.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "Server says: NO MORE QUESTIONS OF THIS TYPE", "Server says...", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		catch(IOException e) {
@@ -353,8 +357,10 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 				btnScience.setEnabled(false);
 			}
 			else {
-				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("No more art questions!");
+                lblCorrect.setText("");
+                artQuestionsEmpty = true;
+                btnArt.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "Server says: NO MORE QUESTIONS OF THIS TYPE", "Server says...", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		catch(IOException e) {
@@ -411,9 +417,12 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 			lblCorrect.setForeground(Color.RED);
 		}
 		buttonGroup.clearSelection();
-		btnGeography.setEnabled(true);
-		btnArt.setEnabled(true);
-		btnScience.setEnabled(true);
+        if(!geoQuestionsEmpty)
+            btnGeography.setEnabled(true);
+        if(!artQuestionsEmpty)
+            btnArt.setEnabled(true);
+        if(!scienceQuestionsEmpty)
+            btnScience.setEnabled(true);
 		rdbtnAnswer1.setEnabled(false);
 		rdbtnAnswer2.setEnabled(false);
 		rdbtnAnswer3.setEnabled(false);
@@ -432,6 +441,10 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	private int identifier;
 	private Question question;
 	private int answer;
+	
+    private boolean geoQuestionsEmpty = false;
+    private boolean scienceQuestionsEmpty = false;
+    private boolean artQuestionsEmpty = false;
 	
 	private void connect() throws IOException, NotBoundException{
 		registry = LocateRegistry.getRegistry("localhost",1998);
