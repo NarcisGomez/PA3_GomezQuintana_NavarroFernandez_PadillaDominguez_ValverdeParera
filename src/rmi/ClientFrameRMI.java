@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -250,6 +251,9 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	
 	protected void btnConnectactionPerformed(ActionEvent arg0) {
 		/* COMPLETE */
+		try{
+			connect();
+		}catch (Exception e) {System.out.println("Connection: " + e);}
 	}
 	
 	protected void btnGeographyactionPerformed(ActionEvent arg0) {
@@ -295,5 +299,18 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	/* COMPLETE
 	 * add here other non-GUI attributes and helper methods 
 	 */
+	private Registry registry;
+	private TrivialSolitaire provider;
+	private int identifier;
+	
+	private void connect() throws IOException, NotBoundException{
+		registry = LocateRegistry.getRegistry("TrivialSolitaire",1998);
+		provider = (TrivialSolitaire) registry.lookup("TrivialSolitaire");
+		
+		identifier = provider.Hello();
+		
+	}
+	
+	
 	
 }

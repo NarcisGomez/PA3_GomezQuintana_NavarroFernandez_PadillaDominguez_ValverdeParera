@@ -22,8 +22,8 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	private static List<Question> art, geo, science; // shouldn't modify these lists...
 	
 	/* COMPLETE 1a add other necessary attributes */
-	private List<Question> artList, geoList, scienceList;
-	private volatile int id;
+	private List<ClientInfo> clientList;
+	private int id;
 	 
 	// static initializer (initializes the lists)
 	static {
@@ -55,12 +55,7 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	
 	public TrivialSolitaireImpl() throws RemoteException {
 		/* COMPLETE if needed 1b: Constructor ... */
-		artList = new LinkedList<Question>();
-		geoList = new LinkedList<Question>();
-		scienceList = new LinkedList<Question>();
-		art.forEach(q -> artList.add(q));
-		geo.forEach(q -> geoList.add(q));
-		science.forEach(q -> scienceList.add(q));
+		clientList = new LinkedList<ClientInfo>();
 		id = 0;
 	}
 
@@ -68,21 +63,28 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	@Override
 	public int Hello() throws RemoteException {
 		// TODO Auto-generated method stub
-		return 0;
+		int identifier = id;
+		id += 1;
+		clientList.add(new ClientInfo(identifier, geo, art, science));
+		return identifier;
 	}
 
 	@Override
 	public Question next(int id, String type) throws RemoteException {
 		// TODO Auto-generated method stub
+		for (ClientInfo client : clientList) {
+			if(client.getId() == id) return client.getQuestion(type);
+		}
 		return null;
 	}
 
 	@Override
 	public void stop(int id) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		for (ClientInfo client : clientList) {
+			if(client.getId() == id) clientList.remove(client);
+		}
 	}
-
 }
 
 
@@ -90,5 +92,51 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 // (like the questions that have not been been sent to it yet...)
 class ClientInfo {
 	/* COMPLETE */
+	private Random alea;
+	private int identifier;
+	private List<Question> artList, geoList, scienceList;
+	
+	public ClientInfo (int id, List<Question> geo,List<Question> art, List<Question> science) {
+		alea = new Random();
+		identifier = id;
+		artList = new LinkedList<Question>();
+		geoList = new LinkedList<Question>();
+		scienceList = new LinkedList<Question>();
+		geo.forEach(q -> geoList.add(q));
+		art.forEach(q -> artList.add(q));
+		science.forEach(q -> scienceList.add(q));
+		
+	}
+	
+	public Question getQuestion(String type) {
+		
+		Question question = null;
+		
+		switch (type) {
+		case "GEO":
+			if (geoList.size() > 0) {
+				question = geoList.get(alea.nextInt(geoList.size()));
+				geoList.remove(question);
+			}
+			break;
+			
+		case "ART":
+			if (artList.size() > 0) {
+				question = artList.get(alea.nextInt(artList.size()));
+				artList.remove(question);
+			}
+			break;
 
+		case "SCIENCE":
+			if (scienceList.size() > 0) {
+				question = scienceList.get(alea.nextInt(scienceList.size()));
+				scienceList.remove(question);
+			}
+			break;
+
+		}
+		return question;
+	}
+	
+	public int getId() {return identifier;}
 }
