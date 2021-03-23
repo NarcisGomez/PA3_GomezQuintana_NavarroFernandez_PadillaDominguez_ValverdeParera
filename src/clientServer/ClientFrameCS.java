@@ -252,8 +252,8 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			sendRequest("HELLO " + name_textField.getText());
 			receiveReply();
 			
-			lblCorrect.setForeground(Color.black);
-			lblCorrect.setText("HELLO " + name_textField.getText() + ", PICK A QUESTION...");
+			JOptionPane.showMessageDialog(null, "Server says: HELLO" + name_textField.getText() , "Server says...", JOptionPane.INFORMATION_MESSAGE);
+            lblCorrect.setText("");
 			lblCorrect.setVisible(true);
 			btnArt.setEnabled(true);
 			btnGeography.setEnabled(true);
