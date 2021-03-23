@@ -262,9 +262,10 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			btnConnect.setEnabled(false);
 			name_textField.setEditable(false);
 			
-			}
+		}
 		catch(IOException e) {
 			System.out.println("Connection: " + e);
+			JOptionPane.showMessageDialog(null, "Server unavailable. Client will close", "Server unavailable", JOptionPane.ERROR_MESSAGE);
 			System.exit(ERROR);}
 	}
 	
