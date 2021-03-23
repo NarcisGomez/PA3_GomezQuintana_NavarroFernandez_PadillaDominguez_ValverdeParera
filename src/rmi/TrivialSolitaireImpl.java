@@ -99,13 +99,9 @@ class ClientInfo {
 	public ClientInfo (int id, List<Question> geo,List<Question> art, List<Question> science) {
 		alea = new Random();
 		identifier = id;
-		artList = new LinkedList<Question>();
-		geoList = new LinkedList<Question>();
-		scienceList = new LinkedList<Question>();
-		geo.forEach(q -> geoList.add(q));
-		art.forEach(q -> artList.add(q));
-		science.forEach(q -> scienceList.add(q));
-		
+		artList = new LinkedList<Question>(art);
+		geoList = new LinkedList<Question>(geo);
+		scienceList = new LinkedList<Question>(science);
 	}
 	
 	public Question getQuestion(String type) {
