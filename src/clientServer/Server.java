@@ -60,12 +60,9 @@ public class Server  extends Thread {
 		this.outputChannel = new PrintWriter(this.connection.getOutputStream(), true);
 		/* COMPLETE 1bb: (optional) initialize other attributes */
 		this.alea = new Random();
-		artList = new LinkedList<Question>();
-		geoList = new LinkedList<Question>();
-		scienceList = new LinkedList<Question>();
-		art.forEach(q -> artList.add(q));
-		geo.forEach(q -> geoList.add(q));
-		science.forEach(q -> scienceList.add(q));
+		artList = new LinkedList<Question>(art);
+		geoList = new LinkedList<Question>(geo);
+		scienceList = new LinkedList<Question>(science);
 	}
 
 	public void run() {
