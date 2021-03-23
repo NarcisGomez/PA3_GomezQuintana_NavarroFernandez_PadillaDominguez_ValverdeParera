@@ -250,6 +250,7 @@ public class ClientFrameCS extends JFrame implements ActionListener {
 			connect();
 			
 			sendRequest("HELLO " + name_textField.getText());
+			receiveReply();
 			
 			lblCorrect.setForeground(Color.black);
 			lblCorrect.setText("HELLO " + name_textField.getText() + ", PICK A QUESTION...");
