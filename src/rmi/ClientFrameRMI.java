@@ -265,6 +265,7 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 			name_textField.setEditable(false);
 		}catch (Exception e) {
 			System.out.println("Connection: " + e);
+			JOptionPane.showMessageDialog(null, "Server unavailable. Client will close", "Server unavailable", JOptionPane.ERROR_MESSAGE);
 			System.exit(ERROR);
 		}
 	}
