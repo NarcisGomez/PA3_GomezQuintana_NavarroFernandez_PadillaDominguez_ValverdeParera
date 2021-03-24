@@ -250,11 +250,10 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void btnConnectactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try{
 			connect();
 			
-            JOptionPane.showMessageDialog(null, "Server says: HELLO" + name_textField.getText() , "Server says...", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Server says: HELLO " + name_textField.getText() , "Server says...", JOptionPane.INFORMATION_MESSAGE);
 			lblCorrect.setText("");
 			lblCorrect.setVisible(true);
 			btnArt.setEnabled(true);
@@ -271,12 +270,11 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void btnGeographyactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			question = provider.next(identifier, "GEO");
 			if (question != null) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
 				rdbtnAnswer1.setEnabled(true);
@@ -304,12 +302,11 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void btnScienceactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			question = provider.next(identifier, "SCIENCE");
 			if (question != null) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
 				rdbtnAnswer1.setEnabled(true);
@@ -337,12 +334,11 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void btnArtactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			question = provider.next(identifier, "ART");
 			if (question != null) {
 				lblCorrect.setForeground(Color.BLACK);
-				lblCorrect.setText("Take your time...");
+				lblCorrect.setText("");
 				lblQuestion.setText(question.getTheQuestion());
 				rdbtnAnswer1.setText(question.getAnswers()[0]);
 				rdbtnAnswer1.setEnabled(true);
@@ -370,7 +366,6 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void btnPlayNoMoreactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		try {
 			disconnect();
 			System.exit(EXIT_ON_CLOSE);
@@ -382,32 +377,27 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	}
 	
 	protected void rdbtnAnswer1actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer1.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer2actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer2.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer3actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer3.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 	
 	protected void rdbtnAnswer4actionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		rdbtnAnswer4.setSelected(true);
 		btnCheck.setEnabled(true);
 	}
 		
 	
 	protected void btnCheckactionPerformed(ActionEvent arg0) {
-		/* COMPLETE */
 		if (checkAnswers()) {
 			lblCorrect.setText(name_textField.getText() + ", YOUR ANSWER IS CORRECT");
 			lblCorrect.setForeground(Color.GREEN);
@@ -433,9 +423,7 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
 	
 	// ----------------- My stuff starts here --------------
 	
-	/* COMPLETE
-	 * add here other non-GUI attributes and helper methods 
-	 */
+	
 	private Registry registry;
 	private TrivialSolitaire provider;
 	private int identifier;
@@ -466,7 +454,5 @@ public class ClientFrameRMI extends JFrame implements ActionListener {
     	else if (rdbtnAnswer4.isSelected() && answer == 4) return true;
     	else return false;
     }
-	
-	
 	
 }

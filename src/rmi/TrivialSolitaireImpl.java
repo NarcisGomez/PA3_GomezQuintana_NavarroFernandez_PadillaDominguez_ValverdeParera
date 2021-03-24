@@ -21,7 +21,6 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	
 	private static List<Question> art, geo, science; // shouldn't modify these lists...
 	
-	/* COMPLETE 1a add other necessary attributes */
 	private List<ClientInfo> clientList;
 	private int id;
 	 
@@ -54,15 +53,12 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	}
 	
 	public TrivialSolitaireImpl() throws RemoteException {
-		/* COMPLETE if needed 1b: Constructor ... */
 		clientList = new LinkedList<ClientInfo>();
 		id = 0;
 	}
 
-	/* COMPLETE 2: implement interface and other helper methods */
 	@Override
 	public int Hello() throws RemoteException {
-		// TODO Auto-generated method stub
 		int identifier = id;
 		id += 1;
 		clientList.add(new ClientInfo(identifier, geo, art, science));
@@ -71,7 +67,6 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 
 	@Override
 	public Question next(int id, String type) throws RemoteException {
-		// TODO Auto-generated method stub
 		for (ClientInfo client : clientList) {
 			if(client.getId() == id) return client.getQuestion(type);
 		}
@@ -80,7 +75,6 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 
 	@Override
 	public void stop(int id) throws RemoteException {
-		// TODO Auto-generated method stub
 		for (ClientInfo client : clientList) {
 			if(client.getId() == id) clientList.remove(client);
 		}
@@ -91,7 +85,6 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 // consider using instances of this class to store relevant information regarding a particular client
 // (like the questions that have not been been sent to it yet...)
 class ClientInfo {
-	/* COMPLETE */
 	private Random alea;
 	private int identifier;
 	private List<Question> artList, geoList, scienceList;
