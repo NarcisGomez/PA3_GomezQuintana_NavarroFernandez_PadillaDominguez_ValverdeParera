@@ -76,7 +76,10 @@ public class TrivialSolitaireImpl extends UnicastRemoteObject implements Trivial
 	@Override
 	public void stop(int id) throws RemoteException {
 		for (ClientInfo client : clientList) {
-			if(client.getId() == id) clientList.remove(client);
+			if(client.getId() == id) {
+				clientList.remove(client);
+				break;
+			}
 		}
 	}
 }
